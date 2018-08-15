@@ -1,0 +1,48 @@
+{
+  "name": "@aldahick/site-api",
+  "version": "0.0.0",
+  "description": "My personal website's backend",
+  "author": "Alex Hicks <alex@alexhicks.net> (https://alexhicks.net)",
+  "license": "MIT",
+  "scripts": {
+    "format": "tslint --fix -p .",
+    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "start:dev": "nodemon",
+    "prestart:prod": "rm -rf dist && tsc",
+    "start:prod": "node dist/main.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "^5.0.0",
+    "@nestjs/core": "^5.0.0",
+    "@nestjs/passport": "^1.1.0",
+    "@nestjs/typeorm": "^5.1.0",
+    "dotenv": "^6.0.0",
+    "fastify-formbody": "^2.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "mongodb": "^3.1.3",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-jwt": "^4.0.0",
+    "randomstring": "^1.1.5",
+    "recursive-readdir": "^2.2.2",
+    "reflect-metadata": "^0.1.12",
+    "rxjs": "^6.0.0",
+    "typeorm": "^0.2.7",
+    "typescript": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^4.0.3",
+    "@types/express": "^4.0.39",
+    "@types/jsonwebtoken": "^7.2.8",
+    "@types/node": "^9.3.0",
+    "@types/passport": "^0.4.6",
+    "@types/passport-http-bearer": "^1.0.33",
+    "@types/passport-jwt": "^3.0.1",
+    "@types/randomstring": "^1.1.6",
+    "@types/recursive-readdir": "^2.2.0",
+    "nodemon": "^1.14.1",
+    "ts-node": "^4.1.0",
+    "tsconfig-paths": "^3.1.1",
+    "tslint": "5.3.2"
+  }
+}

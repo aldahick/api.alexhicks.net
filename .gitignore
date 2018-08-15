@@ -1,0 +1,7 @@
+*.js
+!/*.js
+/dist
+/node_modules
+/.env
+/*.env
+/startdev.ps1
