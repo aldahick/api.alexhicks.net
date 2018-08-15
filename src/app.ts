@@ -5,6 +5,10 @@ import * as providers from "./providers";
 @nest.Module({
     imports: [],
     controllers: Object.values(controllers),
-    providers: Object.values(providers),
+    providers: [
+        providers.ConfigProvider,
+        providers.DatabaseProvider,
+        providers.BearerStrategy
+    ],
 })
 export default class AppModule { }

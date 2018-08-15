@@ -45,9 +45,6 @@
       "ignore-template-strings"
     ],
     "no-unnecessary-callback-wrapper": true,
-    "no-unused-variable": [true,
-      "check-parameters"
-    ],
     "no-var-keyword": true,
     "object-literal-shorthand": true,
     "one-line": [true,

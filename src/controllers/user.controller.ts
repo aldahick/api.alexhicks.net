@@ -7,7 +7,7 @@ import * as randomstring from "randomstring";
 @nest.Controller("user")
 export class UserController {
     constructor(
-        private readonly db: providers.DatabaseProvider
+        private readonly db: providers.Repositories
     ) {}
 
     @nest.Get("generateToken")

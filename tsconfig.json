@@ -12,6 +12,7 @@
     "preserveConstEnums": true,
     "removeComments": true,
     "skipLibCheck": true,
+    "strictPropertyInitialization": false,
     "module": "commonjs",
     "strict": true,
     "noLib": false,
