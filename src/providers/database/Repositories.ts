@@ -3,7 +3,7 @@ import * as models from "../../models";
 
 export class Repositories {
     get mediaItems() { return this.connection.getRepository(models.MediaItem); }
-    get users() { return this.connection.getMongoRepository(models.User); }
+    get users() { return this.connection.getRepository(models.User); }
 
     constructor(
         private readonly connection: orm.Connection

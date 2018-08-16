@@ -2,10 +2,11 @@ import * as crypto from "crypto";
 import * as orm from "typeorm";
 import { MediaItem } from "./MediaItem";
 
+@orm.Index(["username"], { unique: true })
 @orm.Entity()
 export class User {
-    @orm.ObjectIdColumn()
-    id: orm.ObjectID;
+    @orm.PrimaryGeneratedColumn()
+    id: number;
 
     @orm.Column()
     username: string;
@@ -20,8 +21,7 @@ export class User {
     passwordSalt: string;
 
     @orm.OneToMany(() => MediaItem, mi => mi.user)
-    mediaItems: MediaItem[];
-
+    mediaItems?: MediaItem[];
 
     verifyPassword(password: string): boolean {
         return this.passwordHash === User.hashPassword(password, this.passwordSalt!);
@@ -31,16 +31,5 @@ export class User {
         return crypto.createHash("sha256")
             .update(password + salt)
             .digest("hex");
-    }
-
-    static join<Entity extends {[key: string]: any}>(prop: keyof Entity = "user", alias = "entity") {
-        return {
-            join: {
-                alias,
-                leftJoin: {
-                    user: `${alias}.${prop}`
-                }
-            }
-        };
     }
 }

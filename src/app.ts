@@ -11,4 +11,4 @@ import * as providers from "./providers";
         providers.BearerStrategy
     ],
 })
-export default class AppModule { }
+export class AppModule { }
