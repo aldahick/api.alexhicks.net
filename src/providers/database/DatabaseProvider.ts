@@ -2,6 +2,7 @@ import * as nest from "@nestjs/common";
 import * as orm from "typeorm";
 import { ConfigProvider } from "../config";
 import { Repositories } from "./Repositories";
+import { NamingStrategy } from "./NamingStrategy";
 import * as models from "../../models";
 
 export const DatabaseProvider: nest.Provider = {
@@ -20,7 +21,8 @@ export const DatabaseProvider: nest.Provider = {
                 password: config.get("DB_PASSWORD"),
                 database: config.get("DB_DATABASE"),
                 entities: Object.values(models),
-                synchronize: true
+                synchronize: true,
+                namingStrategy: new NamingStrategy()
             });
         }
         return new Repositories(connection);

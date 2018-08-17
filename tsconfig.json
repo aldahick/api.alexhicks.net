@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "declaration": false,
-    "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
