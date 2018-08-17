@@ -1,9 +1,11 @@
+import * as _ from "lodash";
 import * as nest from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import * as providers from "../providers";
 import * as db from "../models";
 import * as express from "express";
 import * as fs from "fs-extra";
+import * as path from "path";
 import * as randomstring from "randomstring";
 import "multer";
 
@@ -16,15 +18,35 @@ export class MediaController {
     ) { }
 
     @nest.Get()
-    async list(
+    async getMany(
         @nest.Query("dir") dir = "",
         @providers.User() user: db.User
     ) {
         dir = (dir.endsWith("/") ? dir : (dir + "/")).replace(/^\//, "");
         return {
-            mediaItems: (await this.db.mediaItems.find({
-                user: { id: user.id },
-            })).filter(i => i.key.startsWith(dir))
+            mediaItems: await this.db.mediaItems.createQueryBuilder("item")
+                .where("item.user_id = :userId", { userId: user.id })
+                    .andWhere("item.key LIKE :dir", { dir: dir + "%" })
+                .getMany()
+        };
+    }
+
+    @nest.Get("dirs")
+    async getDirs(
+        @nest.Query("dir") dir = "",
+        @providers.User() user: db.User
+    ) {
+        const { mediaItems } = await this.getMany(dir, user);
+        const dirs = _.uniq(
+            mediaItems.map(i => path.dirname(i.key))
+        ).map(d => d.split("/"));
+        return {
+            directories: _.uniq(dirs.map(dir => {
+                if (dir.length === 0) return [];
+                return _.range(1, dir.length + 1).map(
+                    length => dir.slice(0, length).join("/")
+                );
+            }).reduce((p, v) => p.concat(v), [])).sort()
         };
     }
 
