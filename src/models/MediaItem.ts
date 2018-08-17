@@ -21,7 +21,7 @@ export class MediaItem {
     filename: string;
 
     get filePath() {
-        return "files/media/" + this.filename;
+        return process.cwd() + "/files/media/" + this.filename;
     }
 
     static async getForUser(
@@ -40,6 +40,7 @@ export class MediaItem {
         });
         if (!item) throw new nest.NotFoundException();
         if (item.user.id !== userId) throw new nest.UnauthorizedException();
+        delete item.user;
         return item;
     }
 }

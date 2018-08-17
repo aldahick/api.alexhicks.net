@@ -3,7 +3,7 @@ import { AuthGuard } from "@nestjs/passport";
 import * as providers from "../providers";
 import * as db from "../models";
 import * as express from "express";
-import { promises as fs } from "fs";
+import * as fs from "fs-extra";
 import * as randomstring from "randomstring";
 import "multer";
 
@@ -16,13 +16,15 @@ export class MediaController {
     ) { }
 
     @nest.Get()
-    async getAll(
+    async list(
+        @nest.Query("dir") dir = "",
         @providers.User() user: db.User
     ) {
+        dir = (dir.endsWith("/") ? dir : (dir + "/")).replace(/^\//, "");
         return {
-            mediaItems: await this.db.mediaItems.find({
-                user: { id: user.id }
-            })
+            mediaItems: (await this.db.mediaItems.find({
+                user: { id: user.id },
+            })).filter(i => i.key.startsWith(dir))
         };
     }
 
@@ -36,13 +38,14 @@ export class MediaController {
         };
     }
 
-    @nest.Get("content/:id")
+    @nest.Get(":id/content")
     async getContent(
         @nest.Param("id") id: number,
         @providers.User() user: db.User,
         @nest.Res() res: express.Response
     ) {
         const mediaItem = await db.MediaItem.getForUser(this.db.mediaItems, id, user.id);
+        res.contentType(mediaItem.mimeType);
         res.sendFile(mediaItem.filePath);
     }
 
