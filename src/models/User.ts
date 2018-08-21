@@ -6,19 +6,19 @@ import { MediaItem } from "./MediaItem";
 @orm.Entity()
 export class User {
     @orm.PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @orm.Column()
-    username: string;
+    username!: string;
 
     @orm.Column({ nullable: true })
     token?: string;
 
     @orm.Column()
-    passwordHash: string;
+    passwordHash!: string;
 
     @orm.Column()
-    passwordSalt: string;
+    passwordSalt!: string;
 
     @orm.OneToMany(() => MediaItem, mi => mi.user)
     mediaItems?: MediaItem[];

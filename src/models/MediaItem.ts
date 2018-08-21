@@ -6,19 +6,19 @@ import { User } from "./User";
 @orm.Entity()
 export class MediaItem {
     @orm.PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @orm.ManyToOne(() => User, u => u.mediaItems, { nullable: false })
-    user: User;
+    user!: User;
 
     @orm.Column({ nullable: false })
-    key: string;
+    key!: string;
 
     @orm.Column({ nullable: false })
-    mimeType: string;
+    mimeType!: string;
 
     @orm.Column({ nullable: false })
-    filename: string;
+    filename!: string;
 
     get filePath() {
         return process.cwd() + "/files/media/" + this.filename;

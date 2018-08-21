@@ -8,7 +8,8 @@ import * as providers from "./providers";
     providers: [
         providers.ConfigProvider,
         providers.DatabaseProvider,
-        providers.BearerStrategy
+        providers.BearerStrategy,
+        providers.CronJobProvider
     ],
 })
 export class AppModule { }

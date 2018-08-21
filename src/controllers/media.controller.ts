@@ -1,13 +1,13 @@
 import * as _ from "lodash";
 import * as nest from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import * as providers from "../providers";
-import * as db from "../models";
 import * as express from "express";
 import * as fs from "fs-extra";
 import * as path from "path";
 import * as randomstring from "randomstring";
 import "multer";
+import * as providers from "providers";
+import * as db from "models";
 
 @nest.Injectable()
 @nest.Controller("media")

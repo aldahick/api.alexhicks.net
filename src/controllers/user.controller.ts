@@ -1,8 +1,8 @@
 import * as nest from "@nestjs/common";
 import * as express from "express";
 import * as randomstring from "randomstring";
-import * as db from "../models";
-import * as providers from "../providers";
+import * as db from "models";
+import * as providers from "providers";
 
 @nest.Injectable()
 @nest.Controller("user")
