@@ -1,3 +1,4 @@
+/// <reference path="../types/modules/ical.d.ts" />
 import * as db from "models";
 import * as ical from "ical";
 import * as _ from "lodash";

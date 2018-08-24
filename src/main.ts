@@ -1,3 +1,8 @@
+import { register } from "tsconfig-paths";
+register({
+    baseUrl: __dirname,
+    paths: {}
+});
 import { NestFactory } from "@nestjs/core";
 import * as nest from "@nestjs/common";
 import { AppModule } from "app";
