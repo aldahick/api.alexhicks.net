@@ -6,8 +6,9 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import * as randomstring from "randomstring";
 import "multer";
-import * as providers from "providers";
+import { CrudExecutor } from "lib";
 import * as db from "models";
+import * as providers from "providers";
 
 @nest.Injectable()
 @nest.Controller("media")
@@ -56,7 +57,7 @@ export class MediaController {
         @providers.User() user: db.User
     ) {
         return {
-            mediaItem: await db.MediaItem.getForUser(this.db.mediaItems, id, user.id)
+            mediaItem: await CrudExecutor.getOne(this.db.mediaItems, id, user)
         };
     }
 
@@ -66,7 +67,7 @@ export class MediaController {
         @providers.User() user: db.User,
         @nest.Res() res: express.Response
     ) {
-        const mediaItem = await db.MediaItem.getForUser(this.db.mediaItems, id, user.id);
+        const mediaItem = await CrudExecutor.getOne(this.db.mediaItems, id, user);
         res.contentType(mediaItem.mimeType);
         res.sendFile(mediaItem.filePath);
     }
@@ -101,7 +102,7 @@ export class MediaController {
         @nest.Body("id") id: number,
         @providers.User() user: db.User
     ) {
-        const item = await db.MediaItem.getForUser(this.db.mediaItems, id, user.id);
+        const item = await CrudExecutor.getOne(this.db.mediaItems, id, user);
         await fs.unlink(item.filePath);
         await this.db.mediaItems.delete(item);
         return { ok: true };
