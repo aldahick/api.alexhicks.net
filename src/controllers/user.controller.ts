@@ -9,6 +9,7 @@ import * as providers from "providers";
 @nest.Controller("user")
 export class UserController {
     constructor(
+        private readonly config: providers.ConfigProvider,
         private readonly db: providers.Repositories
     ) {}
 
@@ -17,6 +18,9 @@ export class UserController {
         @nest.Body("username") username: string,
         @nest.Body("password") password: string
     ) {
+        if (!Boolean(this.config.get("AUTH_ALLOW_REGISTRATION") || "true")) {
+            throw new nest.UnauthorizedException();
+        }
         const passwordSalt = randomstring.generate(32);
         const user = await CrudExecutor.create(this.db.users, {
             username,
