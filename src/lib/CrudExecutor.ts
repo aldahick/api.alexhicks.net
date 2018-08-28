@@ -9,7 +9,7 @@ export class CrudExecutor {
         entity: Partial<Entity>
     ): Promise<Entity> {
         const hasRequiredColumns = repo.metadata.ownColumns
-            .filter(c => !c.isNullable && !c.isGenerated)
+            .filter(c => !c.isNullable && !c.isGenerated && !c.isCreateDate && !c.isUpdateDate)
             .every(c => entity[c.propertyName as keyof Entity] !== undefined);
         if (!hasRequiredColumns) throw new nest.UnprocessableEntityException();
         const indices = repo.metadata.ownIndices

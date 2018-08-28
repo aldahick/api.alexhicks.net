@@ -2,9 +2,7 @@ import * as _ from "lodash";
 import * as nest from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import * as express from "express";
-import * as fs from "fs-extra";
 import * as path from "path";
-import * as randomstring from "randomstring";
 import "multer";
 import { CrudExecutor } from "lib";
 import * as db from "models";
@@ -69,41 +67,50 @@ export class MediaController {
     ) {
         const mediaItem = await CrudExecutor.getOne(this.db.mediaItems, id, user);
         res.contentType(mediaItem.mimeType);
-        res.sendFile(mediaItem.filePath);
+        return mediaItem.content;
     }
 
     @nest.UseInterceptors(nest.FileInterceptor("file"))
     @nest.Post()
     async create(
         @nest.Body("key") key: string,
+        @nest.Body("mimeType") mimeType: string,
+        @nest.Body("content") content: string,
         @nest.UploadedFile() file: Express.Multer.File,
         @providers.User() user: db.User
     ) {
-        if (!key) throw new nest.UnprocessableEntityException();
-        let mediaItem = this.db.mediaItems.create({ key });
-        const existingCount = await this.db.mediaItems.count({
-            key: mediaItem.key,
-            user
-        });
-        if (existingCount > 0) throw new nest.ConflictException();
-        mediaItem.filename = randomstring.generate(16);
-        await fs.writeFile(mediaItem.filePath, file ? file.buffer : "");
-        mediaItem = await this.db.mediaItems.save(
-            this.db.mediaItems.create({
-                ...mediaItem, user,
-                mimeType: file ? file.mimetype : "text/plain"
+        return {
+            mediaItem: await CrudExecutor.create(this.db.mediaItems, {
+                key, user,
+                mimeType: file ? file.mimetype : (mimeType || "text/plain"),
+                content: file ? file.buffer : new Buffer(content || "")
             })
-        );
-        return { mediaItem };
+        };
     }
 
-    @nest.Delete()
-    async delete(
-        @nest.Body("id") id: number,
+    @nest.Patch(":id")
+    async update(
+        @nest.Param("id") id: number,
+        @nest.Body("key") key: string,
+        @nest.Body("mimeType") mimeType: string,
+        @nest.Body("content") content: string,
         @providers.User() user: db.User
     ) {
         const item = await CrudExecutor.getOne(this.db.mediaItems, id, user);
-        await fs.unlink(item.filePath);
+        await this.db.mediaItems.update(item.id, {
+            key: key || item.key,
+            mimeType: mimeType || item.mimeType,
+            content: content ? new Buffer(content) : item.content
+        });
+        return { ok: true };
+    }
+
+    @nest.Delete(":id")
+    async delete(
+        @nest.Param("id") id: number,
+        @providers.User() user: db.User
+    ) {
+        const item = await CrudExecutor.getOne(this.db.mediaItems, id, user);
         await this.db.mediaItems.delete(item);
         return { ok: true };
     }

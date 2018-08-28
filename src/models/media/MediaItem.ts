@@ -10,16 +10,15 @@ export class MediaItem {
     @orm.ManyToOne(() => User, u => u.mediaItems, { nullable: false })
     user!: User;
 
-    @orm.Column({ nullable: false })
+    @orm.Column()
     key!: string;
 
-    @orm.Column({ nullable: false })
+    @orm.Column()
     mimeType!: string;
 
-    @orm.Column({ nullable: false })
-    filename!: string;
+    @orm.Column({ type: "bytea" })
+    content!: Buffer;
 
-    get filePath() {
-        return process.cwd() + "/files/media/" + this.filename;
-    }
+    @orm.CreateDateColumn()
+    created!: Date;
 }
