@@ -8,8 +8,9 @@
     "format": "tslint --fix -p .",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "start:dev": "nodemon",
-    "prestart:prod": "rm -rf dist && tsc",
-    "start:prod": "node dist/main.js"
+    "prestart:prod": "yarn build",
+    "start:prod": "node dist/main.js",
+    "build": "rm -rf dist && tsc"
   },
   "dependencies": {
     "@nestjs/common": "^5.0.0",
