@@ -1,11 +1,10 @@
 import * as nest from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import * as db from "models";
 import { CrudExecutor } from "lib";
 import * as providers from "providers";
 
 @nest.UseGuards(
-    AuthGuard("bearer"),
+    providers.AuthGuard(),
     providers.PermissionGuard(db.UserRole.User)
 )
 @nest.Injectable()

@@ -1,4 +1,5 @@
 export * from "./decorators/User";
-export * from "./strategies";
+export * from "./AuthGuard";
+export * from "./BearerStrategy";
 export * from "./IValidationCallback";
 export * from "./PermissionGuard";
