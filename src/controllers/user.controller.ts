@@ -24,7 +24,8 @@ export class UserController {
         const user = await CrudExecutor.create(this.db.users, {
             username,
             passwordSalt,
-            passwordHash: db.User.hashPassword(password, passwordSalt)
+            passwordHash: db.User.hashPassword(password, passwordSalt),
+            role: db.UserRole.None
         });
         return {
             id: user.id,

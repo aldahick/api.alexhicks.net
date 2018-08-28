@@ -8,9 +8,12 @@ import { CrudExecutor } from "lib";
 import * as db from "models";
 import * as providers from "providers";
 
+@nest.UseGuards(
+    AuthGuard("bearer"),
+    providers.PermissionGuard(db.UserRole.User)
+)
 @nest.Injectable()
 @nest.Controller("media")
-@nest.UseGuards(AuthGuard("bearer"))
 export class MediaController {
     constructor(
         private readonly db: providers.Repositories

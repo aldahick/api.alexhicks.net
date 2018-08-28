@@ -1,6 +1,6 @@
 import * as crypto from "crypto";
 import * as orm from "typeorm";
-import { UserToken } from "models/auth";
+import { UserRole, UserToken } from "models/auth";
 import { Calendar } from "models/calendar";
 import { MediaItem } from "models/media";
 import { SlackUser } from "models/slack";
@@ -19,6 +19,9 @@ export class User {
 
     @orm.Column()
     passwordSalt!: string;
+
+    @orm.Column({ type: "int" })
+    role!: UserRole;
 
     @orm.OneToMany(() => Calendar, ce => ce.user)
     calendars?: Calendar[];

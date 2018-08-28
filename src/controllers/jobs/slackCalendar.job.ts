@@ -1,10 +1,15 @@
 import * as nest from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import axios from "axios";
 import * as slack from "@slack/client";
 import { Calendar } from "lib";
 import * as db from "models";
 import * as providers from "providers";
 
+@nest.UseGuards(
+    AuthGuard("bearer"),
+    providers.PermissionGuard(db.UserRole.Admin)
+)
 @nest.Injectable()
 @nest.Controller()
 export class SlackCalendarJob {

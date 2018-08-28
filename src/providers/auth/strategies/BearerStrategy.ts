@@ -15,7 +15,7 @@ export class BearerStrategy extends PassportStrategy(Strategy) {
             .innerJoinAndSelect("user_token.user", "user")
             .where("user_token.token = :token", { token })
             .getOne();
-        if (!userToken || userToken.expires.getTime() > Date.now()) {
+        if (!userToken || userToken.expires.getTime() <= Date.now()) {
             return done(new nest.UnauthorizedException(), false);
         }
         done(undefined, userToken.user);

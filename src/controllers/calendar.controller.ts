@@ -4,9 +4,12 @@ import * as db from "models";
 import { CrudExecutor } from "lib";
 import * as providers from "providers";
 
+@nest.UseGuards(
+    AuthGuard("bearer"),
+    providers.PermissionGuard(db.UserRole.User)
+)
 @nest.Injectable()
 @nest.Controller("calendar")
-@nest.UseGuards(AuthGuard("bearer"))
 export class CalendarController {
     constructor(
         private readonly db: providers.Repositories
