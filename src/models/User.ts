@@ -1,5 +1,6 @@
 import * as crypto from "crypto";
 import * as orm from "typeorm";
+import { UserToken } from "models/auth";
 import { Calendar } from "models/calendar";
 import { MediaItem } from "models/media";
 import { SlackUser } from "models/slack";
@@ -12,9 +13,6 @@ export class User {
 
     @orm.Column()
     username!: string;
-
-    @orm.Column({ nullable: true })
-    token?: string;
 
     @orm.Column()
     passwordHash!: string;
@@ -30,6 +28,9 @@ export class User {
 
     @orm.OneToMany(() => SlackUser, su => su.user)
     slackUsers?: SlackUser[];
+
+    @orm.OneToMany(() => UserToken, ut => ut.user)
+    tokens?: UserToken[];
 
     verifyPassword(password: string): boolean {
         return this.passwordHash === User.hashPassword(password, this.passwordSalt!);
