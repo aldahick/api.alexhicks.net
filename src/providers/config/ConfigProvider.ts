@@ -17,4 +17,8 @@ export class ConfigProvider {
     get(key: IConfigurationKey): string {
         return this.config[key];
     }
+
+    getBoolean(key: IConfigurationKey): boolean {
+        return this.config[key] === "true";
+    }
 }

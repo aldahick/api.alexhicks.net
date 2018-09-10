@@ -17,7 +17,7 @@ export class UserController {
         @nest.Body("username") username: string,
         @nest.Body("password") password: string
     ) {
-        if (!Boolean(this.config.get("AUTH_ALLOW_REGISTRATION") || "true")) {
+        if (!this.config.getBoolean("AUTH_ALLOW_REGISTRATION")) {
             throw new nest.UnauthorizedException();
         }
         const passwordSalt = randomstring.generate(32);
@@ -45,5 +45,12 @@ export class UserController {
             token: randomstring.generate(32)
         }));
         return { token: userToken.token };
+    }
+
+    @nest.Get("canRegister")
+    async canRegister() {
+        return {
+            canRegister: this.config.getBoolean("AUTH_ALLOW_REGISTRATION")
+        };
     }
 }
