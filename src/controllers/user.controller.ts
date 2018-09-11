@@ -42,7 +42,7 @@ export class UserController {
         if (!user || !user.verifyPassword(password)) throw new nest.UnauthorizedException();
         const userToken = await this.db.userTokens.save(new db.UserToken({
             user,
-            token: randomstring.generate(32)
+            token: db.UserToken.generateToken()
         }));
         return { token: userToken.token };
     }

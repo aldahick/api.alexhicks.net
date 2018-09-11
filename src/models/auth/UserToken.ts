@@ -1,4 +1,5 @@
 import * as orm from "typeorm";
+import * as randomstring from "randomstring";
 import { User } from "models/User";
 
 @orm.Index(["token"], { unique: true })
@@ -27,5 +28,9 @@ export class UserToken {
     updateExpiration() {
         // set expiration to "1 day after creation"
         this.expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    }
+
+    static generateToken() {
+        return randomstring.generate(32);
     }
 }
