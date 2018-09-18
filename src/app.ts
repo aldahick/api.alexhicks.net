@@ -9,7 +9,8 @@ import * as providers from "./providers";
         providers.ConfigProvider,
         providers.DatabaseProvider,
         providers.BearerStrategy,
-        providers.CronJobProvider
+        providers.CronJobProvider,
+        providers.ChessServer
     ],
 })
 export class AppModule { }
