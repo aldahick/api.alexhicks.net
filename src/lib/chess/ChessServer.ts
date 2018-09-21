@@ -2,6 +2,7 @@ import { WebSocketGateway, SubscribeMessage } from "@nestjs/websockets";
 import * as randomstring from "randomstring";
 import * as Events from "./events";
 import { Game } from "./Game";
+import { Player } from "./Player";
 
 @WebSocketGateway({ namespace: "chess" })
 export class ChessServer {
@@ -14,6 +15,10 @@ export class ChessServer {
             evt.gameId = partialGameId || randomstring.generate(16);
             if (!partialGameId) this.games[evt.gameId] = new Game();
         }
-        this.games[evt.gameId].addPlayer(socket);
+        this.games[evt.gameId].addPlayer(new Player({
+            game: this.games[evt.gameId],
+            id: evt.id,
+            socket
+        }));
     }
 }

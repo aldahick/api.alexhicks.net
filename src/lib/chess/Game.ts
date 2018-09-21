@@ -3,26 +3,28 @@ import { Player } from "./Player";
 import { PlayerColor } from "./PlayerColor";
 
 export class Game {
-    board = new chess.Chess();
-    players = [
-        new Player(this, PlayerColor.White),
-        new Player(this, PlayerColor.Black)
-    ];
+    readonly board = new chess.Chess();
+    private readonly players: Player[] = [];
 
     get isFull() {
-        return this.players.every(p => p.socket !== undefined);
+        return this.players.length >= 2;
     }
 
     move(from: chess.Square, to: chess.Square) {
-        if (!this.isFull) return false;
-        const move = this.board.move({ from, to });
+        // if (!this.isFull) return false;
+        const move = this.board.move({ from, to, promotion: "q" });
         if (!move) return false;
         this.players.forEach(p => p.sendBoard());
         return true;
     }
 
-    addPlayer(client: SocketIO.Socket) {
-        const player = this.players.find(p => p.socket === undefined)!;
-        player.init(client);
+    addPlayer(player: Player) {
+        player.color = this.players.length === 0
+            ? PlayerColor.White : PlayerColor.Black;
+        this.players.push(player);
+    }
+
+    removePlayer(player: Player) {
+        this.players.splice(this.players.findIndex(p => p.id === player.id), 1);
     }
 }
