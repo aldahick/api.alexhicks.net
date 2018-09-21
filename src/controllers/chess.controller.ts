@@ -12,6 +12,7 @@ export class ChessController {
     games() {
         return {
             games: Object.keys(this.server.games).filter(key =>
+                this.server.games[key].isActive &&
                 !this.server.games[key].isFull
             )
         };

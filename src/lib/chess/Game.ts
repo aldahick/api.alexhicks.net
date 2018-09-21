@@ -3,6 +3,7 @@ import { Player } from "./Player";
 import { PlayerColor } from "./PlayerColor";
 
 export class Game {
+    isActive = true;
     readonly board = new chess.Chess();
     private readonly players: Player[] = [];
 
@@ -19,6 +20,7 @@ export class Game {
     }
 
     addPlayer(player: Player) {
+        this.isActive = true;
         player.color = this.players.length === 0
             ? PlayerColor.White : PlayerColor.Black;
         this.players.push(player);
@@ -26,5 +28,6 @@ export class Game {
 
     removePlayer(player: Player) {
         this.players.splice(this.players.findIndex(p => p.id === player.id), 1);
+        if (this.players.length === 0) this.isActive = false;
     }
 }

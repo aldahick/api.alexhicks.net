@@ -44,4 +44,14 @@ export class User {
             .update(password + salt)
             .digest("hex");
     }
+
+    static async getFromToken(repo: orm.Repository<User>, token: string) {
+        const user = await repo.createQueryBuilder("user")
+            .leftJoinAndSelect("user.tokens", "user_token")
+            .where("user_token.token = :token", { token })
+            .getOne();
+        if (!user) return undefined;
+        const userToken = user.tokens!.find(t => t.token === token);
+        return (userToken && userToken.expires.getTime() > Date.now()) ? user : undefined;
+    }
 }

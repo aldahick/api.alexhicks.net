@@ -1,12 +1,19 @@
+import * as nest from "@nestjs/common";
 import { WebSocketGateway, SubscribeMessage } from "@nestjs/websockets";
 import * as randomstring from "randomstring";
+import * as db from "models";
+import * as providers from "providers";
 import * as Events from "./events";
 import { Game } from "./Game";
 import { Player } from "./Player";
 
+@nest.Injectable()
 @WebSocketGateway({ namespace: "chess" })
 export class ChessServer {
     games: {[id: string]: Game} = {};
+    constructor(
+        readonly db: providers.Repositories
+    ) { }
 
     @SubscribeMessage("join")
     async onJoin(socket: SocketIO.Socket, evt: Events.JoinEvent) {
@@ -17,8 +24,8 @@ export class ChessServer {
         }
         this.games[evt.gameId].addPlayer(new Player({
             game: this.games[evt.gameId],
-            id: evt.id,
-            socket
+            socket,
+            user: (await db.User.getFromToken(this.db.users, evt.token)) as db.User
         }));
     }
 }

@@ -1,14 +1,19 @@
 import { Game } from "./Game";
 import { PlayerColor } from "./PlayerColor";
+import * as randomstring from "randomstring";
+import * as db from "models";
 import * as Events from "./events";
 
 export class Player {
     color?: PlayerColor;
     readonly game!: Game;
-    readonly id!: string;
+    readonly id: string;
     readonly socket!: SocketIO.Socket;
-    constructor(init: Pick<Player, "game" | "id" | "socket">) {
+    readonly user!: db.User;
+
+    constructor(init: Pick<Player, "game" | "socket" | "user">) {
         Object.assign(this, init);
+        this.id = randomstring.generate(8);
         this.socket.on("move", this.onMove);
         this.socket.on("disconnect", this.onDisconnect);
         this.sendBoard();
