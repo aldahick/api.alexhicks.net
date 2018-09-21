@@ -14,9 +14,9 @@ export class Game {
     }
 
     move(from: chess.Square, to: chess.Square) {
+        if (!this.isFull) return false;
         const move = this.board.move({ from, to });
         if (!move) return false;
-        console.log(move, this.players.length);
         this.players.forEach(p => p.sendBoard());
         return true;
     }

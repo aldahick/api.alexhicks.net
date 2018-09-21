@@ -11,7 +11,6 @@ export class ChessServer {
     async onJoin(socket: SocketIO.Socket, evt: Events.JoinEvent) {
         if (!evt.gameId || !this.games[evt.gameId] || this.games[evt.gameId].isFull) {
             const partialGameId = Object.keys(this.games).find(id => !this.games[id].isFull);
-            console.log("join", partialGameId, evt.gameId);
             evt.gameId = partialGameId || randomstring.generate(16);
             if (!partialGameId) this.games[evt.gameId] = new Game();
         }
