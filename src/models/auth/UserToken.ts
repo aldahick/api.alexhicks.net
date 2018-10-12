@@ -30,6 +30,8 @@ export class UserToken {
         this.expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
     }
 
+    // schema:server-only
+
     static generateToken() {
         return randomstring.generate(32);
     }

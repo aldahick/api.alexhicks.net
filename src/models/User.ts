@@ -35,6 +35,8 @@ export class User {
     @orm.OneToMany(() => UserToken, ut => ut.user)
     tokens?: UserToken[];
 
+    // schema:server-only
+
     verifyPassword(password: string): boolean {
         return this.passwordHash === User.hashPassword(password, this.passwordSalt!);
     }

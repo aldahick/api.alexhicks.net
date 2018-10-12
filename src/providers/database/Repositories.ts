@@ -1,5 +1,5 @@
 import * as orm from "typeorm";
-import * as models from "../../models";
+import * as models from "models";
 
 export class Repositories {
     get userTokens() { return this.connection.getRepository(models.UserToken); }
