@@ -11,7 +11,7 @@ import * as providers from "providers";
     providers.PermissionGuard(db.UserRole.Admin)
 )
 @nest.Injectable()
-@nest.Controller()
+@nest.Controller("slackCalendar")
 export class SlackCalendarJob {
     private readonly logger = new nest.Logger("jobs/slackCalendar");
     constructor(
