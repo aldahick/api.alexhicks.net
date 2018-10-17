@@ -9,7 +9,7 @@ import { NestFactory } from "@nestjs/core";
 import * as nest from "@nestjs/common";
 import { AppModule } from "app";
 
-export let app: nest.INestApplication & nest.INestExpressApplication;
+let app: (nest.INestApplication & nest.INestExpressApplication);
 
 async function main() {
     app = await NestFactory.create(AppModule);
@@ -17,6 +17,7 @@ async function main() {
     await app.listen(process.env.API_PORT || 3000);
 }
 
+// tslint:disable-next-line
 if ((app!) === undefined) {
     main().catch(console.error);
 }
