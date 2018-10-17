@@ -9,7 +9,7 @@ import { NestFactory } from "@nestjs/core";
 import * as nest from "@nestjs/common";
 import { AppModule } from "app";
 
-let app: (nest.INestApplication & nest.INestExpressApplication);
+export let app: (nest.INestApplication & nest.INestExpressApplication);
 
 async function main() {
     app = await NestFactory.create(AppModule);

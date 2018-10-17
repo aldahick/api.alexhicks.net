@@ -1,14 +1,26 @@
 import * as orm from "typeorm";
 import * as models from "models";
 
-export class Repositories {
-    get userTokens() { return this.connection.getRepository(models.UserToken); }
+const tables = {
+    userTokens: models.UserToken,
+    mediaItems: models.MediaItem,
+    users: models.User
+};
+type TablesProvider = {
+    [key in keyof typeof tables]: orm.Repository<(typeof tables)[key]["prototype"]>;
+};
 
-    get mediaItems() { return this.connection.getRepository(models.MediaItem); }
-
-    get users() { return this.connection.getRepository(models.User); }
+export class Repositories implements TablesProvider {
+    readonly userTokens!: orm.Repository<models.UserToken>;
+    readonly mediaItems!: orm.Repository<models.MediaItem>;
+    readonly users!: orm.Repository<models.User>;
 
     constructor(
         private readonly connection: orm.Connection
-    ) { }
+    ) {
+        const tableNames = Object.keys(tables) as (keyof typeof tables)[];
+        for (const tableName of tableNames) {
+            this[tableName] = this.connection.getRepository(tables[tableName]);
+        }
+    }
 }
