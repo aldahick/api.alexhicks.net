@@ -1,3 +1,5 @@
+// tslint:disable no-console
+
 import { register } from "tsconfig-paths";
 register({
     baseUrl: __dirname,

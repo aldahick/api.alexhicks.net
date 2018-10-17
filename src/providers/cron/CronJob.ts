@@ -20,5 +20,5 @@ export class CronJob {
     run = () => {
         this.lastRunTime = Date.now();
         return app.get<any>(this.controllerName)[this.methodName]();
-    };
+    }
 }

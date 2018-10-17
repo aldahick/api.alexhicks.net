@@ -41,5 +41,5 @@ export class Calendar {
                 hour: evt.end.getHours(),
                 minute: evt.end.getMinutes()
             }).toDate()
-        });
+        })
 }

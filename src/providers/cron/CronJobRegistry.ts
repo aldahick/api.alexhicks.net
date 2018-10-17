@@ -16,8 +16,10 @@ class Registry {
         await Promise.all(this.jobs
             .filter(j => j.shouldRun())
             .map(j => j.run())
+            // TODO inject logger instance
+            // tslint:disable-next-line
         ).catch(console.error);
-    };
+    }
 }
 
 export const CronJobRegistry = new Registry();
