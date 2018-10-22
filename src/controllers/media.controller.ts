@@ -77,9 +77,9 @@ export class MediaController {
     async create(
         @nest.Body("key") key: string,
         @nest.Body("mimeType") mimeType: string,
-        @nest.Body("content") content: string,
-        @nest.UploadedFile() file: Express.Multer.File,
-        @providers.User() user: db.User
+        @providers.User() user: db.User,
+        @nest.Body("content") content?: string,
+        @nest.UploadedFile() file?: Express.Multer.File,
     ) {
         return {
             mediaItem: await CrudExecutor.create(this.db.mediaItems, {
