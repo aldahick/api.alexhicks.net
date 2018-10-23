@@ -1,6 +1,7 @@
 import * as crypto from "crypto";
 import * as orm from "typeorm";
 import { UserRole, UserToken } from "models/auth";
+import { Flag } from "models/flags";
 import { MediaItem } from "models/media";
 
 @orm.Index(["username"], { unique: true })
@@ -20,6 +21,9 @@ export class User {
 
     @orm.Column({ type: "int" })
     role!: UserRole;
+
+    @orm.OneToMany(() => Flag, f => f.user)
+    flags?: Flag[];
 
     @orm.OneToMany(() => MediaItem, mi => mi.user)
     mediaItems?: MediaItem[];

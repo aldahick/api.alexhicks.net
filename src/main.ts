@@ -14,7 +14,7 @@ export let app: (nest.INestApplication & nest.INestExpressApplication);
 async function main() {
     app = await NestFactory.create(AppModule);
     app.enableCors();
-    await app.listen(process.env.API_PORT || 3000);
+    await app.listen(process.env.API_PORT || 3001);
 }
 
 // tslint:disable-next-line

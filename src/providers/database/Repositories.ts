@@ -3,6 +3,7 @@ import * as models from "models";
 
 const tables = {
     userTokens: models.UserToken,
+    flags: models.Flag,
     mediaItems: models.MediaItem,
     users: models.User
 };
@@ -12,6 +13,7 @@ type TablesProvider = {
 
 export class Repositories implements TablesProvider {
     readonly userTokens!: orm.Repository<models.UserToken>;
+    readonly flags!: orm.Repository<models.Flag>;
     readonly mediaItems!: orm.Repository<models.MediaItem>;
     readonly users!: orm.Repository<models.User>;
 
