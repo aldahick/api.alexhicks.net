@@ -21,13 +21,16 @@ export class UserToken {
     @orm.CreateDateColumn()
     created!: Date;
 
-    @orm.Column({ nullable: true })
+    @orm.Column()
     expires!: Date;
 
     @orm.BeforeInsert()
     updateExpiration() {
-        // set expiration to "1 day after creation"
-        this.expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        if (this.expires === undefined || isNaN(this.expires.getTime())) {
+            // set expiration to "1 day after creation"
+            this.expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+            return;
+        }
     }
 
     // schema:server-only

@@ -29,7 +29,7 @@ export class UserController {
         });
         return {
             id: user.id,
-            token: await this.generateToken(username, password).then(r => r.token)
+            token: await this.generateToken(username, password, NaN).then(r => r.token)
         };
     }
 
@@ -37,12 +37,14 @@ export class UserController {
     async generateToken(
         @nest.Query("username") username: string,
         @nest.Query("password") password: string,
+        @nest.Query("expires", { transform: Number }) expires: number
     ) {
         const user = await this.db.users.findOne({ username });
         if (!user || !user.verifyPassword(password)) throw new nest.UnauthorizedException();
         const userToken = await this.db.userTokens.save(new db.UserToken({
             user,
-            token: db.UserToken.generateToken()
+            token: db.UserToken.generateToken(),
+            expires: new Date(expires)
         }));
         return { token: userToken.token };
     }
